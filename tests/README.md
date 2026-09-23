@@ -15,6 +15,31 @@ The core suite has 40 deterministic behavioral checks. It covers independent wor
 
 The GitHub suite checks the connector's request and response behavior using controlled responses. It does not prove live credentials, repository access or a successful remote build. The workflow also syntax-checks every top-level `engineering/*.js` file.
 
+## Optional browser connection regressions
+
+With Google Chrome installed, run these commands from the repository root:
+
+```sh
+npm install --no-save --package-lock=false playwright
+node tests/browser-github.test.cjs
+```
+
+These five browser scenarios check that a pending file response cannot overwrite newer typing, connecting the practice repository preserves the chosen product repository, C# results stay with their requested lesson, a draft loaded from one repository cannot be committed through another repository connection, and a new source file requires a work branch and explicit commit review. They use the real interface and connector with controlled GitHub responses. All HTTPS traffic is intercepted, the token is fictional, and no repository or workflow is changed. Each scenario also checks that the token is absent from saved browser state and no uncaught page errors occurred.
+
+By default the suite opens the current `engineering/index.html` from disk, injects the checked-in lesson data, and runs installed Chrome without displaying a window. No local web server is required. Optional environment variables are `STUDIO_TEST_URL` for a served instance, `STUDIO_BROWSER_CHANNEL` for another Playwright browser channel such as `msedge` or `chromium`, `STUDIO_PLAYWRIGHT_MODULE` for an existing Playwright module path, and `STUDIO_TEST_REPORT` for a JSON report output path. To use bundled Chromium, first run `npx playwright install chromium` and choose the `chromium` channel. The suite is optional and is not part of the basic Node-only CI checks.
+
+## Optional full browser walkthrough
+
+```sh
+npm install --no-save --package-lock=false playwright
+npx playwright install chromium --only-shell
+node tests/browser.test.cjs
+```
+
+The walkthrough defaults to Playwright's matching Chromium headless shell and opens `Open Engineering Studio.html` directly. Its 29 checks exercise menu and staff planning, ordering QR validation, ticket evidence and reopening, an actually rendered and clickable cart preview, an injected bug and its fix, continued preview logging, sandbox isolation, checkpoints, help search, workspace isolation, exports, a synthetic legacy import, competing browser tabs, and three screen widths. It makes no authenticated remote calls. Screenshots, fictional exports and the JSON results are written to ignored `test-results/`.
+
+Set `STUDIO_TEST_URL` to run the same assertions against a hosted copy. `STUDIO_PLAYWRIGHT_MODULE` and `STUDIO_BROWSER_CHANNEL` can override the module and browser, but the matching browser is recommended: system Chrome 153 intermittently returned a blank sandboxed frame under Playwright during testing, while the matching Headless Shell 151 passed the visible-heading and real-click assertions. The suite does not weaken the iframe sandbox or replace rendering assertions with source-text checks. These browser checks are optional and do not consume GitHub Actions minutes when run locally.
+
 ## Actual C# starter execution
 
 The final CI step reads all five preserved programs from `engineering/csharp-lessons.json`. A Python standard-library script in `.github/workflows/ci.yml` creates an isolated temporary .NET 10 console project for each program. It clears NuGet package sources, includes no package references, restores and compiles the actual source, then executes `dotnet run --no-build --no-restore`.

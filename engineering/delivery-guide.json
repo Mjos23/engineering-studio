@@ -782,6 +782,17 @@
         "Choose one owner to reconcile the copies and export the accepted result; do not assume a last save merged both versions."
       ],
       "example": "Record: your backup filename + accepted backup filename\n+ which changes were retained. Never discard the only\ncopy of a teammate’s unsaved work."
+    },
+    {
+      "code": "GitHub Actions: job was not started / billing / spending limit",
+      "title": "The cloud compiler could not start",
+      "meaning": "GitHub blocked the runner before compilation. This does not establish a code failure or a passing build.",
+      "steps": [
+        "Open the exact GitHub run and read its annotation to confirm whether billing, the included allowance, or a repository policy blocked it.",
+        "Ask the account owner to review Settings → Billing & plans. Keep the agreed spending ceiling; increasing it or buying a plan is not an automatic fix.",
+        "After Actions access is restored, rerun the same source and refresh the completed result. Browser practice, drafts and exports remain available while cloud builds are blocked."
+      ],
+      "example": "Result: BLOCKED — runner never started.\nSource revision: record the exact SHA.\nNext check: owner resolves account access, then rerun."
     }
   ]
 }

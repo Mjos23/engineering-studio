@@ -12,7 +12,7 @@ Source repository: [Mjos23/engineering-studio](https://github.com/Mjos23/enginee
 2. Follow **Your delivery path**. Ten tickets cover the brief, tested release, restaurant workspace, presentation, menu, staff roles, ordering entry point, acceptance, debugging and handoff. Each ticket has steps, explanations, hints and acceptance criteria.
 3. Use **Client setup** to prepare a menu, proposed staff accounts and the approved ordering URL. The phone illustration reflects your draft. The QR encodes the exact supplied URL locally.
 4. Use **Build room → Guided practice** to edit HTML/CSS/JavaScript, run the isolated preview and test a known cart bug. Five C# lessons include complete editable programs and reference outputs. Checkpoints let you return to a working practice draft.
-5. Use **Build room → Product repository** for connected source editing. Browse files, create a work branch, load a file, review and save a commit, and read build results. Default-branch saves are blocked. Existing file SHAs protect against overwriting newer edits.
+5. Use **Build room → Product repository** for connected source editing. Browse files, create a work branch, load or start a source file, review and save a commit, and read build results. Default-branch saves are blocked. Existing file SHAs protect against overwriting newer edits.
 6. Run **Quality checks**, record real acceptance observations, then assemble **Release desk** evidence. Download the handoff ZIP and ask an independent reviewer to assess it.
 
 ## C# and product builds from the browser

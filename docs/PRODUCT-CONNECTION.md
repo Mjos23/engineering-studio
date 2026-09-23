@@ -4,7 +4,7 @@ Engineering Studio owns the reusable browser workspace. Each unrelated product k
 
 ## Working now
 
-- Browse a connected repository, load text source, create a work branch and save a single-file commit with a current blob SHA. Saving refuses the default branch and detects file conflicts.
+- Browse a connected repository, load or create text source, create a work branch and save a single-file commit with a current blob SHA. Saving refuses the default branch and detects file conflicts.
 - Request an existing reviewed CI-only workflow; read its real job status. A queued request is not a pass.
 - Match a workflow result to an exact product repository and 40-character commit before attaching evidence. A single successful workflow is not proof that all required checks passed.
 - Run the five editable C# examples in the supplied GitHub workflow; the source is an explicit input and is distinct from the workflow commit.

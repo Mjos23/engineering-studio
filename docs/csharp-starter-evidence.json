@@ -1,0 +1,36 @@
+{
+  "sdk": "10.0.401",
+  "platform": "Windows x64, isolated verification SDK",
+  "results": [
+    {
+      "lesson": "money",
+      "passed": true,
+      "sourceSHA256": "d0c2b6982930b3959085f562440376c100af346ea9c7d68a10d1e88c2ae01b5a",
+      "output": "Subtotal: 2598 cents\nTax: 195 cents; tip: 400 cents\nTotal: 3193 cents\nPASS: money\n"
+    },
+    {
+      "lesson": "validation",
+      "passed": true,
+      "sourceSHA256": "b730d73c0638de49e49851d2f841365fe8a60bd4a9d31b07f95f0c9d5a44bbd5",
+      "output": "Enter a name from 1 to 40 characters.\nChoose 1 to 20 items.\nPASS: validation\n"
+    },
+    {
+      "lesson": "records",
+      "passed": true,
+      "sourceSHA256": "c6448464f437fa0c53e8756733eed1600defda661d1f60b32f0014826b198428",
+      "output": "Original: Garden soup, 900 cents\nWeekend: Garden soup, 950 cents\nSold-out copy available: False\nPASS: records\n"
+    },
+    {
+      "lesson": "tenants",
+      "passed": true,
+      "sourceSHA256": "acda80a040b94fa8a1c03a3c403ca8342caa096a51c87cd65f8c3ddbd8cee27d",
+      "output": "Lantern order: 1200 cents\nHarbor order: 900 cents\nPASS: tenants\n"
+    },
+    {
+      "lesson": "retries",
+      "passed": true,
+      "sourceSHA256": "2cd70413f02c33fd4d9c4f6d3ac54d8bcd9d741edd6c8fc10fcf9b1fe056c16b",
+      "output": "First receipt: order-1\nRetry receipt: order-1\nStored orders: 2\nPASS: retries\n"
+    }
+  ]
+}
