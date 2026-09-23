@@ -1,0 +1,196 @@
+name: Studio C# practice
+run-name: Studio C# · ${{ inputs.lesson }} · ${{ inputs.request_id || github.run_id }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: C# source encoded as UTF-8 Base64 (combined inputs under 65 KB)
+        required: true
+        type: string
+      expected:
+        description: Expected console output encoded as UTF-8 Base64
+        required: true
+        type: string
+      lesson:
+        description: Lesson identifier
+        required: true
+        type: string
+      request_id:
+        description: Unique Studio request identifier
+        required: false
+        default: manual
+        type: string
+
+# This exercises trusted team lesson code, not client data or production services.
+# No checkout, repository credentials, deployment secrets, or package references.
+permissions:
+  contents: read
+
+jobs:
+  practice:
+    name: Compile and check the lesson
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: '1'
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: '1'
+    steps:
+      - name: Install .NET 10
+        id: dotnet
+        uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Prepare an isolated lesson project
+        env:
+          STUDIO_SOURCE: ${{ inputs.source }}
+          STUDIO_EXPECTED: ${{ inputs.expected }}
+          STUDIO_LESSON: ${{ inputs.lesson }}
+          STUDIO_REQUEST: ${{ inputs.request_id }}
+          STUDIO_DOTNET_VERSION: ${{ steps.dotnet.outputs.dotnet-version }}
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import base64, hashlib, json, os, pathlib, re
+          root = pathlib.Path(os.environ['RUNNER_TEMP']) / 'studio-practice'
+          root.mkdir(mode=0o700)
+          def decode(name, limit):
+              raw = os.environ[name]
+              if len(raw) > 4 * ((limit + 2) // 3):
+                  raise SystemExit('Lesson input exceeds the allowed size.')
+              try:
+                  result = base64.b64decode(raw, validate=True)
+                  result.decode('utf-8')
+              except (ValueError, UnicodeDecodeError):
+                  raise SystemExit('Lesson inputs must be valid UTF-8 Base64.')
+              if len(result) > limit or b'\0' in result:
+                  raise SystemExit('Lesson input is too large or contains binary data.')
+              return result
+          source = decode('STUDIO_SOURCE', 120000)
+          expected = decode('STUDIO_EXPECTED', 16000)
+          if not source.strip():
+              raise SystemExit('Lesson source cannot be empty.')
+          lesson = os.environ['STUDIO_LESSON']
+          request = os.environ['STUDIO_REQUEST'] or 'manual'
+          if not re.fullmatch(r'[a-zA-Z0-9_-]{1,80}', lesson):
+              raise SystemExit('Use a short lesson identifier with letters, numbers, hyphens or underscores.')
+          if not re.fullmatch(r'[a-zA-Z0-9_-]{1,80}', request):
+              raise SystemExit('Use a short request identifier with letters, numbers, hyphens or underscores.')
+          sdk = os.environ['STUDIO_DOTNET_VERSION']
+          if not re.fullmatch(r'10\.0\.\d+', sdk):
+              raise SystemExit('The .NET 10 SDK was not available.')
+          (root / 'Program.cs').write_bytes(source)
+          (root / 'expected.txt').write_bytes(expected)
+          (root / 'global.json').write_text(json.dumps({'sdk': {'version': sdk, 'rollForward': 'disable'}}), encoding='utf-8')
+          (root / 'Practice.csproj').write_text('<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><NuGetAudit>false</NuGetAudit></PropertyGroup></Project>', encoding='utf-8')
+          (root / 'NuGet.Config').write_text('<configuration><packageSources><clear /></packageSources></configuration>', encoding='utf-8')
+          (root / 'evidence.json').write_text(json.dumps({
+              'lesson': lesson, 'requestId': request,
+              'sourceSha256': hashlib.sha256(source).hexdigest(),
+              'expectedSha256': hashlib.sha256(expected).hexdigest(),
+              'workflowCommit': os.environ['GITHUB_SHA'],
+              'runId': os.environ['GITHUB_RUN_ID'], 'sdk': sdk
+          }, indent=2), encoding='utf-8')
+          print('Lesson inputs validated; standalone project prepared.')
+          PY
+
+      - name: Compile, run and compare the console output
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import os, pathlib, selectors, signal, subprocess, sys, time
+          root = pathlib.Path(os.environ['RUNNER_TEMP']) / 'studio-practice'
+          report = []
+          child_env = {key: os.environ[key] for key in ('PATH', 'DOTNET_ROOT', 'LANG', 'LD_LIBRARY_PATH') if key in os.environ}
+          child_env.update({'HOME': str(root), 'DOTNET_CLI_HOME': str(root),
+              'DOTNET_CLI_TELEMETRY_OPTOUT': '1', 'DOTNET_NOLOGO': '1',
+              'DOTNET_SKIP_FIRST_TIME_EXPERIENCE': '1'})
+          def execute(arguments, seconds, label):
+              process = subprocess.Popen(arguments, cwd=root, env=child_env,
+                  stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                  start_new_session=True)
+              selector = selectors.DefaultSelector()
+              selector.register(process.stdout, selectors.EVENT_READ, 'stdout')
+              selector.register(process.stderr, selectors.EVENT_READ, 'stderr')
+              output = {'stdout': bytearray(), 'stderr': bytearray()}
+              deadline = time.monotonic() + seconds
+              issue = None
+              try:
+                  while selector.get_map():
+                      if time.monotonic() > deadline:
+                          issue = label + ' exceeded its ' + str(seconds) + '-second time limit.'
+                          break
+                      for key, _ in selector.select(timeout=0.1):
+                          chunk = os.read(key.fd, 8192)
+                          if not chunk:
+                              selector.unregister(key.fileobj)
+                              continue
+                          output[key.data].extend(chunk)
+                          if sum(len(value) for value in output.values()) > 131072:
+                              issue = label + ' produced too much output (128 KB limit).'
+                              break
+                      if issue:
+                          break
+                  if not issue:
+                      process.wait(timeout=max(0.1, deadline - time.monotonic()))
+              except subprocess.TimeoutExpired:
+                  issue = label + ' exceeded its time limit.'
+              finally:
+                  try:
+                      os.killpg(process.pid, signal.SIGKILL)
+                  except ProcessLookupError:
+                      pass
+                  process.wait()
+                  selector.close()
+              text = bytes(output['stdout'][:131072]).decode('utf-8', errors='replace')
+              stderr = bytes(output['stderr'][:131072]).decode('utf-8', errors='replace')
+              report.append(label + '\n' + text + ('\nSTDERR\n' + stderr if stderr else ''))
+              # Prefix every line so lesson output cannot become a workflow command.
+              for line in (text + '\n' + stderr).splitlines():
+                  print('lesson | ' + line)
+              if issue:
+                  raise RuntimeError(issue)
+              if process.returncode != 0:
+                  raise RuntimeError(label + ' failed with exit code ' + str(process.returncode) + '.')
+              return text
+          success = False
+          try:
+              execute(['dotnet', 'build', 'Practice.csproj', '--configuration', 'Release',
+                  '--configfile', 'NuGet.Config', '--nologo', '--verbosity', 'minimal',
+                  '-p:UseSharedCompilation=false'], 90, 'C# compilation')
+              actual = execute(['dotnet', str(root / 'bin/Release/net10.0/Practice.dll')], 10, 'Lesson console output')
+              expected = (root / 'expected.txt').read_text(encoding='utf-8')
+              def normalize(value):
+                  return value.replace('\r\n', '\n').replace('\r', '\n').rstrip('\n')
+              if normalize(actual) != normalize(expected):
+                  report.append('EXPECTED (last 1200 characters)\n' + expected[-1200:] + '\nOBSERVED (last 1200 characters)\n' + actual[-1200:])
+                  raise RuntimeError('Console output differs from the expected lesson output. Compare EXPECTED and OBSERVED below.')
+              report.append('PASS: C# compiled, exited successfully and matched expected output.')
+              print(report[-1])
+              success = True
+          except Exception as error:
+              report.append('FAIL: ' + str(error))
+              print('lesson | ' + report[-1])
+              # Emit one bounded diagnostic for the Studio Checks API reader. Escape data,
+              # including newlines, so lesson text cannot inject another workflow command.
+              diagnostic = '\n\n'.join(report)[-3000:]
+              diagnostic = ''.join(char for char in diagnostic if char in '\r\n\t' or ord(char) >= 32)
+              escaped = diagnostic.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
+              print('::error title=Studio C# diagnostics::' + escaped)
+          finally:
+              (root / 'output.txt').write_text('\n\n'.join(report)[:300000], encoding='utf-8')
+          sys.exit(0 if success else 1)
+          PY
+
+      - name: Save console evidence for one day
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: studio-lesson-evidence
+          path: |
+            ${{ runner.temp }}/studio-practice/output.txt
+            ${{ runner.temp }}/studio-practice/evidence.json
+          retention-days: 1
+          if-no-files-found: ignore

@@ -1,0 +1,9 @@
+backups/
+PRESERVATION.json
+*.local.json
+test-results/
+node_modules/
+.DS_Store
+Thumbs.db
+docs/ENGINEERING-STUDIO.md
+docs/ENGINEERING-STUDIO-START-HERE.md

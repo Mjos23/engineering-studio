@@ -1,0 +1,126 @@
+name: Studio verification
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Browser rules and real C# starters
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: '1'
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: '1'
+    steps:
+      - name: Check out the tested revision
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - name: Check JavaScript syntax and workspace behavior
+        shell: bash
+        run: |
+          set -euo pipefail
+          for source in engineering/*.js; do
+            node --check "$source"
+          done
+          node tests/core.test.cjs
+          node tests/github.test.cjs
+
+      - name: Install .NET 10
+        id: dotnet
+        uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Compile and execute every C# starter
+        env:
+          STUDIO_DOTNET_VERSION: ${{ steps.dotnet.outputs.dotnet-version }}
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import re
+          import subprocess
+          import tempfile
+
+          source_path = Path('engineering/csharp-lessons.json')
+          document = json.loads(source_path.read_text(encoding='utf-8'))
+          lessons = document['lessons']
+          required = {'money', 'validation', 'records', 'tenants', 'retries'}
+          ids = [lesson['id'] for lesson in lessons]
+          if len(ids) != len(set(ids)) or set(ids) != required:
+              raise SystemExit('Expected the five distinct preserved C# starters.')
+          sdk = os.environ['STUDIO_DOTNET_VERSION']
+          if not re.fullmatch(r'10\.0\.\d+', sdk):
+              raise SystemExit('A .NET 10 SDK is required for actual starter verification.')
+
+          def normalize(value):
+              return value.replace('\r\n', '\n').replace('\r', '\n').rstrip('\n')
+
+          report = ['## C# starter execution', '', f'SDK: `{sdk}`',
+              f'Tested revision: `{os.environ.get("GITHUB_SHA", "local")}`', '']
+          with tempfile.TemporaryDirectory(prefix='studio-ci-', dir=os.environ.get('RUNNER_TEMP')) as temporary:
+              root = Path(temporary)
+              child_env = {key: os.environ[key] for key in ('PATH', 'DOTNET_ROOT', 'LANG', 'LD_LIBRARY_PATH') if key in os.environ}
+              child_env.update({'HOME': str(root), 'DOTNET_CLI_HOME': str(root),
+                  'DOTNET_CLI_TELEMETRY_OPTOUT': '1', 'DOTNET_NOLOGO': '1',
+                  'DOTNET_SKIP_FIRST_TIME_EXPERIENCE': '1'})
+              for lesson in lessons:
+                  lesson_id = lesson['id']
+                  source, expected = lesson['source'], lesson['expected']
+                  if not isinstance(source, str) or not source.strip() or len(source) > 120000:
+                      raise SystemExit(f'Invalid starter source for {lesson_id}.')
+                  if not isinstance(expected, str) or not expected or len(expected) > 16000:
+                      raise SystemExit(f'Invalid expected output for {lesson_id}.')
+                  project = root / lesson_id
+                  project.mkdir()
+                  (project / 'Program.cs').write_text(source, encoding='utf-8')
+                  (project / 'global.json').write_text(json.dumps({'sdk': {'version': sdk, 'rollForward': 'disable'}}), encoding='utf-8')
+                  (project / 'Practice.csproj').write_text(
+                      '<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup>'
+                      '<OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework>'
+                      '<ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable>'
+                      '<NuGetAudit>false</NuGetAudit></PropertyGroup></Project>', encoding='utf-8')
+                  (project / 'NuGet.Config').write_text(
+                      '<configuration><packageSources><clear /></packageSources></configuration>', encoding='utf-8')
+
+                  def execute(arguments, timeout):
+                      result = subprocess.run(arguments, cwd=project, env=child_env,
+                          stdin=subprocess.DEVNULL, capture_output=True, text=True,
+                          encoding='utf-8', errors='strict', timeout=timeout)
+                      for line in (result.stdout + '\n' + result.stderr).splitlines():
+                          print(f'{lesson_id} | {line}')
+                      if result.returncode:
+                          raise RuntimeError(f'{lesson_id}: command exited {result.returncode}: {arguments[1]}')
+                      return result.stdout
+
+                  execute(['dotnet', 'restore', 'Practice.csproj', '--configfile', 'NuGet.Config', '--verbosity', 'minimal'], 60)
+                  execute(['dotnet', 'build', 'Practice.csproj', '--no-restore', '--configuration', 'Release',
+                      '--nologo', '--verbosity', 'minimal', '-p:UseSharedCompilation=false'], 60)
+                  actual = execute(['dotnet', 'run', '--project', 'Practice.csproj', '--no-build',
+                      '--no-restore', '--configuration', 'Release'], 15)
+                  if normalize(actual) != normalize(expected):
+                      raise RuntimeError(f'{lesson_id}: full output mismatch. Expected {expected!r}; actual {actual!r}')
+                  digest = hashlib.sha256(source.encode('utf-8')).hexdigest()
+                  print(f'PASS | {lesson_id}: compiled, exited successfully, full console output matched; source SHA256 {digest}')
+                  report.append(f'- PASS `{lesson_id}` — compiled and matched full expected output; source `{digest}`')
+          print('PASS | All five actual .NET 10 starter programs were executed.')
+          if os.environ.get('GITHUB_STEP_SUMMARY'):
+              with Path(os.environ['GITHUB_STEP_SUMMARY']).open('a', encoding='utf-8') as summary:
+                  summary.write('\n'.join(report) + '\n')
+          PY

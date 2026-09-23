@@ -1,0 +1,787 @@
+{
+  "client": {
+    "name": "Harbor & Lime",
+    "brief": "An editable fictional first-client rehearsal for Tide Casa. Prepare a tested release, a restaurant workspace, a menu and staff access, then connect and test the customer ordering entry point. The owner wants guests to understand the menu on a phone and staff to handle orders without engineering help. Use the Studio for drafts, browser practice, checks and evidence. Actual provisioning, code builds, account invitations and deployment need configured, authorized integrations; a draft or completion mark does not perform them.",
+    "deadline": "Ready for a supervised acceptance review after all required evidence is recorded. The launch date must be agreed with the real client; none is assumed here.",
+    "scope": [
+      "Record a named client contact, delivery owner, reviewer and agreed ordering journey without inventing real contact details.",
+      "Identify the exact release commit and link its build, test and release evidence.",
+      "Prepare one restaurant workspace with a stable slug, agreed currency and documented environment.",
+      "Prepare menu categories, whole-cent prices and availability from an approved source.",
+      "Map staff duties to the minimum supported access and document how access is verified.",
+      "Configure the intended HTTPS ordering entry point through a configured integration, then test its QR destination on a phone.",
+      "Exercise the customer and staff flows with approved test data; record failures, fixes and reruns.",
+      "Deliver a reviewed handoff with known limitations, recovery owner and a menu-update walkthrough."
+    ],
+    "outOfScope": [
+      "The fictional example is not an actual client, launch approval or production configuration.",
+      "The browser preview cannot create a live restaurant, send an order, invite staff, charge a card or deploy a release.",
+      "Payments, alcohol sales, tax policy, loyalty, inventory integrations and new production features are not part of this rehearsal.",
+      "Browser-local drafts are not team synchronization, durable order storage or a client database.",
+      "C# lesson editing and reference outputs are learning aids; they are not a C# build or production test result."
+    ],
+    "acceptance": [
+      "The brief records the approved customer journey, environment, scope and who may approve launch.",
+      "The release SHA matches the tested revision; fresh build, test and deployment evidence is linked and the reviewer is named.",
+      "Workspace identity and slug are confirmed in the intended environment, with no access to another restaurant demonstrated for the test user.",
+      "Menu labels, categories, cents and availability agree with the approved menu; two 1299-cent practice items total 2598 cents before any separately specified additions.",
+      "Each staff test account can perform its agreed duties and is denied at least one action outside those duties.",
+      "The final HTTPS link and scanned QR reach the correct restaurant and ordering context on a phone.",
+      "An approved test order has matching customer confirmation and staff evidence; invalid input, unavailable items and retry behavior have recorded outcomes.",
+      "No unresolved blocking defect remains, and a reviewer accepts the handoff with recovery and support ownership."
+    ]
+  },
+  "missions": [
+    {
+      "id": "brief",
+      "title": "01 · Turn the client request into a testable brief",
+      "phase": "Discover",
+      "minutes": 15,
+      "summary": "Agree what the first client will be able to do before editing code or configuration.",
+      "file": null,
+      "anchor": "",
+      "concept": "An acceptance criterion describes an observable result. A task describes work. “Make ordering work” is too vague; “scan the table link, submit one test order, see it in the staff queue” can be checked.",
+      "steps": [
+        {
+          "title": "Use the fictional rehearsal",
+          "body": "Keep Harbor & Lime marked as fictional until a real client brief is supplied. Record the delivery owner and reviewer as unassigned if unknown. Never invent a client approval, email address, deadline or production identifier."
+        },
+        {
+          "title": "Trace one customer journey",
+          "body": "Write: guest scans the agreed entry point → sees the correct restaurant menu → selects available items → supplies the required ordering context → submits → receives confirmation. Then write what the staff member must see and do. Confirm whether the real journey uses tables, pickup or another supported mode."
+        },
+        {
+          "title": "Decide the first release boundary",
+          "body": "For this rehearsal, use one restaurant, a small food and non-alcoholic menu, and supervised test orders. Record payment, tax, alcohol and new feature work as excluded unless a separate real requirement is approved."
+        },
+        {
+          "title": "Write acceptance and ownership",
+          "body": "For each step, name the expected result and who can verify it. Record unknowns as open questions with an owner. A launch date stays undecided until the client and release owner agree it."
+        }
+      ],
+      "acceptance": [
+        "Fictional or real client status, environment, delivery owner, reviewer and ordering mode are explicitly recorded.",
+        "The brief has an observable customer journey and staff journey, with scope and exclusions.",
+        "Every unknown that could change the implementation has an owner; none is silently treated as an answer."
+      ],
+      "hints": [
+        "Separate “we need a menu” into labels, prices, availability, ordering context and what staff receive.",
+        "A screenshot of a nice page does not prove that staff received an order.",
+        "If the brief requires unsupported behavior, create a development requirement before provisioning the restaurant."
+      ],
+      "solution": {
+        "explanation": "Use this as an editable brief. Blank evidence is honest; placeholder approval is not.",
+        "code": "Client: Harbor & Lime — FICTIONAL REHEARSAL\nEnvironment: browser draft\nOrdering mode: table ordering, pending real-client confirmation\nDelivery owner: unassigned\nReviewer / launch approver: unassigned\nJourney: menu → available item → table → confirmation → staff queue\nExcluded: payments, alcohol, tax policy, new integrations\nOpen question / owner: confirm production ordering mode / unassigned\nAcceptance evidence required: release run, configuration readback, phone order and staff outcome"
+      },
+      "manualCheck": "Read the brief without explaining it aloud. A second engineer should be able to say exactly what to test and what remains undecided.",
+      "view": "setup",
+      "setupTab": "basics"
+    },
+    {
+      "id": "release",
+      "title": "02 · Identify a release that was actually tested",
+      "phase": "Verify",
+      "minutes": 20,
+      "summary": "Tie every release claim to a revision, an environment and a fresh result.",
+      "file": null,
+      "anchor": "",
+      "concept": "A commit SHA names a revision of code. A passing check proves something about that revision and its test inputs. It does not automatically prove what is currently deployed.",
+      "steps": [
+        {
+          "title": "Record the candidate revision",
+          "body": "Use a configured repository or release integration, such as the project’s connected GitHub workflow, to select the intended revision. Copy its commit SHA and source link into the evidence record. GitHub checks and product administration require actual connections; a label or saved link does not establish one. If no integration is configured, leave this ticket awaiting integration; the Studio cannot infer or manufacture a release SHA."
+        },
+        {
+          "title": "Read the required checks",
+          "body": "Record the build and test checks required by the repository. Capture the run link, tested SHA, result and time. Read failed output before retrying. An old green check on another revision is not evidence for this candidate."
+        },
+        {
+          "title": "Connect tests to deployment",
+          "body": "Through the authorized release process, obtain the target environment and the deployed revision or artifact identity. Match it to the tested candidate. Do not describe a browser preview or ZIP export as deployed code."
+        },
+        {
+          "title": "Set the decision",
+          "body": "Mark release evidence ready only when the required checks pass for this revision and deployment identity is known. Record unresolved blockers and the release reviewer. A launch decision belongs to the named approver."
+        }
+      ],
+      "acceptance": [
+        "The candidate SHA, repository link and required check results are recorded without placeholders presented as real evidence.",
+        "The deployed revision or artifact matches the tested release, or the mismatch is an explicit blocker.",
+        "Any missing integration, failed check or unknown deployment is recorded as awaiting evidence."
+      ],
+      "hints": [
+        "“It worked yesterday” needs a revision and run link before it can support a release.",
+        "A successful build checks compilation; product behavior still needs acceptance tests.",
+        "If a small fix changes the revision, repeat the affected checks and refresh the evidence."
+      ],
+      "solution": {
+        "explanation": "This record is a gate, not a command to deploy. Populate it from the configured tools and actual run results.",
+        "code": "Candidate SHA:\nRepository / revision link:\nBuild run / result / time:\nTest run / result / time:\nTarget environment:\nDeployed SHA or artifact:\nMatches tested revision: yes / no / unknown\nBlocking failure:\nRelease reviewer:\nDecision: awaiting evidence / ready for review / blocked"
+      },
+      "manualCheck": "Open the run evidence in the configured workflow and compare its revision to the deployment evidence character by character. Do not accept a green badge with an unknown revision.",
+      "view": "release"
+    },
+    {
+      "id": "workspace",
+      "title": "03 · Prepare the restaurant workspace",
+      "phase": "Build",
+      "minutes": 20,
+      "summary": "Give the client a stable identity and confirm the environment before configuring its menu.",
+      "file": null,
+      "anchor": "",
+      "concept": "A display name is for people. A slug is a readable route identifier. A tenant or restaurant identifier separates records. A slug does not grant access and must not be used as an authorization check.",
+      "steps": [
+        {
+          "title": "Draft identity fields",
+          "body": "Use Harbor & Lime as the fictional display name and harbor-and-lime as the proposed slug. Record the agreed currency, ordering mode and environment. Treat the slug as a proposal until uniqueness and supported format are checked in the real product."
+        },
+        {
+          "title": "Confirm the supported creation route",
+          "body": "Use the configured product integration or authorized administration workflow to create or select the restaurant. If the Studio has no configured connection for this action, retain the draft and record the owner who must connect it. Do not guess an API endpoint or paste a database command."
+        },
+        {
+          "title": "Read back the result",
+          "body": "After actual configuration, record the returned restaurant identifier, final slug and environment. Reopen the restaurant through the authorized workflow and compare each field with the brief. A local draft passing validation does not count as creation."
+        },
+        {
+          "title": "Check the boundary",
+          "body": "With approved test accounts and test restaurants, verify the user sees only their permitted restaurant. Record a denied access result for an unrelated test restaurant. Avoid testing against an actual unrelated client."
+        }
+      ],
+      "acceptance": [
+        "The display name, proposed slug, currency, ordering mode and environment are recorded.",
+        "Actual creation has readback evidence and a restaurant identifier, or remains clearly awaiting integration.",
+        "A permitted-access and denied-access result are recorded for approved test identities before the workspace is accepted."
+      ],
+      "hints": [
+        "Renaming a display label should not silently rename a URL already printed on table cards.",
+        "The C# tenants lesson demonstrates filtering by two identifiers; real authorization also requires an authenticated identity and an access decision.",
+        "Never put passwords, tokens, customer records or real invitation secrets into your Studio notes."
+      ],
+      "solution": {
+        "explanation": "This is a configuration proposal. Replace proposed values with verified readback only after the authorized action succeeds.",
+        "code": "Display name: Harbor & Lime\nProposed slug: harbor-and-lime\nEnvironment: draft\nCurrency: USD, fictional rehearsal only\nOrdering mode: table, pending confirmation\nRestaurant ID: not created\nCreation / selection evidence:\nReadback matches approved brief:\nPermitted test account / outcome:\nUnrelated test restaurant denied / evidence:\nIntegration owner if blocked:"
+      },
+      "manualCheck": "Ask another engineer to identify the environment and restaurant from the evidence alone. If either is ambiguous, do not proceed with real configuration.",
+      "view": "setup",
+      "setupTab": "basics"
+    },
+    {
+      "id": "brand",
+      "title": "04 · Make the first screen clear on a phone",
+      "phase": "Build",
+      "minutes": 20,
+      "summary": "Practice a visible, accessible change without breaking the ordering controls.",
+      "file": "index.html",
+      "anchor": "<h1>",
+      "concept": "HTML defines meaning and structure, CSS defines presentation, and JavaScript changes behavior. In the real Blazor UI, .razor components and C# event handlers take on much of the HTML and JavaScript role. A browser prototype is a design draft to adapt and review.",
+      "steps": [
+        {
+          "title": "Change one visible label",
+          "body": "In index.html, replace the main h1 text with Harbor & Lime and use a short welcome sentence. Keep the existing IDs used by JavaScript, including add, quantity, total, table, checkout and message. Run the preview and confirm the heading changed."
+        },
+        {
+          "title": "Make the action easy to understand",
+          "body": "Keep the Add to order and Place practice order controls visibly distinct. Keep the table field labelled. The preview should continue to say that it is a practice order; do not imply a live restaurant connection."
+        },
+        {
+          "title": "Check phone and keyboard use",
+          "body": "Select the phone preview. Check that text is readable, the page does not scroll sideways, the table input fits, and action controls are easy to tap. Use Tab to move through the controls and verify a visible focus indicator."
+        },
+        {
+          "title": "Record the production handoff",
+          "body": "Record which labels or styles should be adapted into the real ordering component and which source area needs review. Do not claim that changing index.html updates TideCasa.Blazor or publishes the restaurant page."
+        }
+      ],
+      "acceptance": [
+        "The preview shows the fictional client name, a clear menu action and an explicit practice notice.",
+        "Required element IDs and the table label remain present; existing behavior checks still pass.",
+        "Phone layout and keyboard focus have actual observations recorded, including any defect."
+      ],
+      "hints": [
+        "Change the words between <h1> and </h1>, not the tag itself.",
+        "If a button suddenly stops working, check whether its id changed before rewriting its click handler.",
+        "Color alone should not communicate an error or an unavailable item; include text."
+      ],
+      "solution": {
+        "explanation": "Replace the heading and supporting text in the HTML draft. This snippet is a fragment, not a replacement for the whole file.",
+        "code": "<h1>Harbor &amp; Lime</h1>\n<p>Fresh plates. A clear order. More time together.</p>\n<!-- Keep the existing menu, cart, labels and element IDs below. -->"
+      },
+      "manualCheck": "Preview the page at phone width, tab to every interactive control, add two items and try submitting with an empty table. Record what you saw.",
+      "view": "build"
+    },
+    {
+      "id": "menu",
+      "title": "05 · Prepare a menu without losing a cent",
+      "phase": "Build",
+      "minutes": 25,
+      "summary": "Separate approved menu data from display formatting and verify price and availability rules.",
+      "file": "app.js",
+      "anchor": "priceCents",
+      "concept": "1299 cents is the stored value for $12.99. Formatting changes how money looks; it must not change the calculation. Production order totals must use authoritative server prices and availability, not values supplied by a browser.",
+      "steps": [
+        {
+          "title": "Draft a small approved menu",
+          "body": "Use fictional rehearsal rows: Sunset fish tacos, Food, 1299 cents, available; Lime soda, Drinks, 450 cents, available; Citrus bowl, Food, 950 cents, unavailable. These are proposed client configuration rows, not items already implemented in the one-item practice preview. Record a source or approval for every real menu later."
+        },
+        {
+          "title": "Trace the practice subtotal",
+          "body": "In app.js, find priceCents, quantity and updateCart. For the existing taco item keep priceCents at 1299. Add the item twice in the preview: the result should be 2 items and $25.98. Formatting divides by 100 only when displaying money."
+        },
+        {
+          "title": "Check the authoritative rules",
+          "body": "For a configured test environment, verify approved names, categories, prices and availability after saving. Try ordering an unavailable test item and an invalid quantity through the supported test workflow. Record the actual rejection. A disabled browser button alone does not prove server validation."
+        },
+        {
+          "title": "Keep additions explicit",
+          "body": "Do not invent tax, service charge, discount or tip rules. The practice subtotal excludes them. If the real product applies additions, record their agreed policy and compare a separately calculated example to the server result."
+        },
+        {
+          "title": "Record the menu readback",
+          "body": "Capture the restaurant, environment, menu source, reviewer and readback evidence. If configuration is not connected, record the rows as a draft with an assigned integration owner."
+        }
+      ],
+      "acceptance": [
+        "Each draft menu row has a name, category, integer cents and explicit availability; the source or fictional status is stated.",
+        "The original browser exercise shows two 1299-cent items as 2598 cents / $25.98.",
+        "Actual menu configuration and unavailable-item rejection have evidence, or are clearly awaiting integration.",
+        "Any tax or fee policy is explicit; the rehearsal subtotal is not presented as a production payable total."
+      ],
+      "hints": [
+        "1299 * 2 is 2598. 1299 + 2 is 1301: this is the cart debugging challenge.",
+        "The one-item preview teaches the total. Do not replace its entire JavaScript file with a menu-data example.",
+        "The C# money lesson adds a fictional tax and a boundary check. Its sample tax rate is not a client configuration recommendation."
+      ],
+      "solution": {
+        "explanation": "This fragment shows the calculation already used by the browser practice model. The separate menu rows belong in the configuration draft.",
+        "code": "const priceCents = 1299;\nconst quantity = 2;\nconst subtotalCents = priceCents * quantity; // 2598\nconst label = \"$\" + (subtotalCents / 100).toFixed(2); // \"$25.98\"\n// Production rechecks price, quantity and availability on the server."
+      },
+      "manualCheck": "Calculate the two-item subtotal without the application, then compare the preview. For live acceptance, repeat with a supported test order and compare the persisted staff order to the approved menu.",
+      "view": "setup",
+      "setupTab": "menu"
+    },
+    {
+      "id": "staff",
+      "title": "06 · Give staff the access their job needs",
+      "phase": "Build",
+      "minutes": 20,
+      "summary": "Map duties to supported roles and prove both allowed and denied behavior.",
+      "file": null,
+      "anchor": "",
+      "concept": "Authentication answers “who is this?” Authorization answers “may this person perform this action for this restaurant?” Hiding a button is not authorization; the server must check the action.",
+      "steps": [
+        {
+          "title": "List duties before choosing roles",
+          "body": "Write what the shift operator needs to do, such as view and progress orders, and what a manager needs to do, such as maintain the menu. These are duties, not assumed product role names. Match them to the roles actually supported by the configured product."
+        },
+        {
+          "title": "Use individual test identities",
+          "body": "For the rehearsal, write labels such as Test shift operator and Test menu manager. Do not invent or invite email addresses. Real invitations require the client-provided identity and the authorized configured workflow. Never store a password or invite token in Studio."
+        },
+        {
+          "title": "Check permitted actions",
+          "body": "Using the approved test identity, record that the assigned person can perform each agreed duty for the intended restaurant. Include environment, actual role, action and outcome."
+        },
+        {
+          "title": "Check denied actions",
+          "body": "Verify a documented action outside the role is denied by the product, and access to another approved test restaurant is denied. Do not widen the role just to make a failing check pass; confirm whether the requirement or role mapping is wrong."
+        },
+        {
+          "title": "Record access ownership",
+          "body": "Name who can grant and revoke access, and how a departing staff member is removed. Leave the ticket awaiting integration until actual account and authorization evidence exists."
+        }
+      ],
+      "acceptance": [
+        "A duty-to-supported-role mapping exists without assumed role names or invented identities.",
+        "Allowed duties and at least one denied action are verified for the intended restaurant using approved test accounts.",
+        "Access grant and removal ownership is documented; secret values are absent from the evidence."
+      ],
+      "hints": [
+        "Start with the smallest supported role that covers the duties; do not default every worker to administrator.",
+        "A 401 generally points to missing or invalid authentication. A 403 generally points to a denied permission; neither should be fixed by disabling access checks.",
+        "If the product cannot express the required restriction, record a gap for review instead of claiming least privilege."
+      ],
+      "solution": {
+        "explanation": "Fill one record per supported role and approved test identity. Keep contact details in the appropriate client system.",
+        "code": "Test identity label:\nRestaurant / environment:\nRequired duties:\nActual supported role:\nAllowed action / observed result / evidence:\nDenied action / observed result / evidence:\nOther test restaurant denied / evidence:\nAccess grant owner:\nAccess removal process:\nStatus: draft / awaiting integration / verified"
+      },
+      "manualCheck": "Have the reviewer read the denied-action result as carefully as the successful one. Both must identify the same test account, restaurant and environment.",
+      "view": "setup",
+      "setupTab": "team"
+    },
+    {
+      "id": "entry-point",
+      "title": "07 · Connect the ordering entry point",
+      "phase": "Build",
+      "minutes": 20,
+      "summary": "Make the printed or shared link land in the correct restaurant and ordering context.",
+      "file": null,
+      "anchor": "",
+      "concept": "A QR code only encodes a destination. It does not create a restaurant route, validate a table or provide access control. The destination must exist and be tested before signage is accepted.",
+      "steps": [
+        {
+          "title": "Get the supported destination",
+          "body": "Obtain the exact approved HTTPS customer ordering URL from the configured product or verified release. Do not derive a path from the slug or guess query parameter names. Record whether the link is restaurant-wide or includes table context."
+        },
+        {
+          "title": "Verify context explicitly",
+          "body": "Open the destination on a phone in a fresh customer session. Confirm the restaurant name, current menu and intended table or ordering mode. If the flow asks for a table, verify the expected prompt; if it encodes one, verify the correct value is shown or used."
+        },
+        {
+          "title": "Prepare and scan the QR",
+          "body": "Generate or obtain a QR for the approved URL using the available QR tool. Generating the image does not configure the destination. Scan the final artifact with a phone camera and compare the resolved destination to the approved URL. A placeholder QR, screenshot of a link, or preview URL is not final evidence."
+        },
+        {
+          "title": "Check recovery and printed text",
+          "body": "Put the readable restaurant name and a supported fallback instruction next to the QR. Test the real scan at intended print size and lighting. Record the artifact revision so a later URL change does not leave stale table cards."
+        },
+        {
+          "title": "Keep the release boundary visible",
+          "body": "Changing this Studio draft does not update hosting, DNS, routing or a printed QR. Record any unconfigured integration and the owner required to complete it."
+        }
+      ],
+      "acceptance": [
+        "The exact HTTPS destination comes from verified product configuration and matches the intended restaurant and context.",
+        "The final QR artifact is scanned successfully on a phone, with resolved URL and visible result recorded.",
+        "The artifact revision, fallback instruction and owner for replacement are documented."
+      ],
+      "hints": [
+        "A localhost or preview address cannot serve customers at the bar.",
+        "HTTPS describes the connection; it does not by itself prove that the correct restaurant or table is selected.",
+        "Never accept a QR solely because the image looks like a QR. Scan it."
+      ],
+      "solution": {
+        "explanation": "Keep the URL blank until the real product supplies it. This template deliberately contains no fabricated endpoint.",
+        "code": "Approved customer HTTPS URL:\nSource configuration / release evidence:\nRestaurant / environment:\nOrdering context: restaurant-wide / table-specific / other supported mode\nQR artifact revision:\nPhone / browser / scan time:\nResolved URL after scan:\nObserved restaurant / table / menu:\nFallback instruction:\nResult / defect / owner:"
+      },
+      "manualCheck": "Scan the final artifact using a device that has not already opened an authenticated staff session. Confirm the public customer flow and record what happened.",
+      "view": "setup",
+      "setupTab": "ordering"
+    },
+    {
+      "id": "acceptance",
+      "title": "08 · Test the full order and its failure paths",
+      "phase": "Verify",
+      "minutes": 30,
+      "summary": "Prove customer and staff outcomes, then test mistakes and retries with approved test data.",
+      "file": null,
+      "anchor": "",
+      "concept": "A test has a setup, action, expected result and observed result. Cross-screen evidence connects one customer attempt to one staff record. A preview success message proves only the preview behavior.",
+      "steps": [
+        {
+          "title": "Prepare the test record",
+          "body": "Record environment, release SHA, restaurant, approved test identity and menu version. Agree how to label and clean up test orders so staff do not fulfil them as real orders. Use the actual supported workflow; do not assume there is a test-mode switch."
+        },
+        {
+          "title": "Run the happy path",
+          "body": "On the verified customer entry point, choose known available items, supply valid ordering context and submit once. Record the confirmation and corresponding staff order identifier, lines, quantities and total. Confirm that the staff member can follow the supported status flow. Use the actual product status names."
+        },
+        {
+          "title": "Run recoverable mistakes",
+          "body": "Test an empty order, missing or invalid ordering context, a documented quantity boundary and an unavailable item. State the expected rule from the approved requirements, then record the actual message and whether a staff order was created. Avoid assuming the lesson quantity range is the production rule."
+        },
+        {
+          "title": "Test retry behavior deliberately",
+          "body": "In the approved test workflow, simulate the documented retry case. The same logical attempt should not create an extra order if that is the production contract. If the product uses idempotency keys, repeat the same key and payload, then check how a changed payload is handled. A second intentional new order may correctly create a new record."
+        },
+        {
+          "title": "Test role and restaurant boundaries",
+          "body": "Confirm the test staff identity sees this restaurant’s order and cannot access another approved test restaurant’s orders. Keep access-denial evidence with the role ticket."
+        },
+        {
+          "title": "Make the result useful",
+          "body": "For each failure, record the smallest reproduction, expected result, actual result, evidence reference and owner. Mark unexecuted cases as not run, never pass. The browser practice checks are a separate evidence category."
+        }
+      ],
+      "acceptance": [
+        "A customer confirmation and matching staff record identify the same test order, items and total.",
+        "Required invalid-input, unavailable-item, retry and access-boundary cases have actual outcomes.",
+        "Each result names the tested environment and revision; blocked and not-run cases remain visible.",
+        "Blocking defects have owners and prevent acceptance until fixed and rerun."
+      ],
+      "hints": [
+        "A receipt shown only in the customer page cannot prove durable storage or staff delivery.",
+        "If a timed-out request might have succeeded, inspect the existing result before submitting a different order.",
+        "Retry and multi-tenant C# lessons illustrate rules using memory. They do not prove concurrent or durable production behavior."
+      ],
+      "solution": {
+        "explanation": "Duplicate this compact record for each test case. Evidence should come from the actual environment under review.",
+        "code": "Case ID / rule:\nEnvironment / release SHA / menu version:\nSetup and approved test data:\nActions:\nExpected customer result:\nExpected staff result:\nActual customer result:\nActual staff result / order ID:\nEvidence reference / time:\nResult: pass / fail / blocked / not run\nDefect / owner / rerun reference:"
+      },
+      "manualCheck": "A reviewer should be able to follow one order from the entry point to the staff outcome, and one rejected attempt to evidence that no unintended order was created.",
+      "view": "quality"
+    },
+    {
+      "id": "debug",
+      "title": "09 · Fix one small failure and prove the fix",
+      "phase": "Verify",
+      "minutes": 25,
+      "summary": "Use a repeatable debugging loop for browser code and read C# errors without guessing.",
+      "file": "Program.cs",
+      "anchor": "Check(",
+      "concept": "Debugging narrows a symptom to one cause. A regression check must fail before the fix for the intended reason and pass afterward. Expected lesson output is a reference, not execution evidence.",
+      "steps": [
+        {
+          "title": "Start with the smallest failure",
+          "body": "For a browser exercise, use the cart bug challenge: two 1299-cent items must total 2598 cents. Record the steps and failing output before changing anything. For a real defect, name the exact environment, revision and affected action."
+        },
+        {
+          "title": "Trace the data",
+          "body": "Ask where the wrong value first appears: input, browser state, request, server decision, stored record or rendered output. In the browser model, compare quantity, priceCents and their use in updateCart. Change one suspected cause at a time."
+        },
+        {
+          "title": "Read the C# boundary",
+          "body": "In the money Program.cs lesson, locate Check calls and Quote. Read the test before the implementation and work out 1299 × 2 = 2598 independently. The lesson’s sample tax calculation is separate from the browser subtotal. Reading or editing C# here does not compile it."
+        },
+        {
+          "title": "Use the error guide",
+          "body": "For a browser error, match the message to the diagnostics and inspect the first relevant line. For a C# build error supplied by a configured build workflow, record its code, file and line, then make the smallest draft fix. Do not mark C# as passed without real compiler and execution output for that draft."
+        },
+        {
+          "title": "Rerun the original and nearby cases",
+          "body": "After a browser fix, rerun the same failing case and existing practice checks. For a production fix, use the configured review/build workflow and rerun affected acceptance cases on the new revision. Retain the before and after evidence."
+        },
+        {
+          "title": "Escalate a concrete question",
+          "body": "If the cause is still uncertain, hand the reviewer a reproducible case, relevant small code excerpt and one tested hypothesis. Record what decision is needed. This supports a useful code review without needing ChatGPT during the task."
+        }
+      ],
+      "acceptance": [
+        "The defect has a repeatable reproduction and a recorded expected-versus-actual result.",
+        "The proposed fix is tied to one cause, with before and after evidence for the original case.",
+        "Nearby behavior still passes or is explicitly not run; a C# draft has no invented compile result."
+      ],
+      "hints": [
+        "Fix the first compiler error first: one missing character can produce several later messages.",
+        "Change the calculation, not the expected answer, when the approved requirement says two items cost 2598 cents.",
+        "If the code is correct but configuration is wrong, record a configuration correction instead of editing unrelated source."
+      ],
+      "solution": {
+        "explanation": "The browser cart subtotal uses multiplication. This C# check expresses the same independently calculated requirement inside the money lesson; it is a draft until genuinely executed.",
+        "code": "Check(Quote(1299, 2, 0, 0).Total == 2598,\n    \"Two items cost 2598 cents with zero tax and tip.\");\n// Quote and Check are defined in the money lesson Program.cs.\n// A printed reference PASS is not proof that this draft ran."
+      },
+      "manualCheck": "Reproduce the original wrong subtotal, apply the smallest fix and rerun. Your record should show the failing case, changed line, passing case and limits of the evidence.",
+      "view": "build"
+    },
+    {
+      "id": "handoff",
+      "title": "10 · Hand over a repeatable first-client launch",
+      "phase": "Handoff",
+      "minutes": 25,
+      "summary": "Give the reviewer and shift team enough evidence and instructions to operate without your narration.",
+      "file": null,
+      "anchor": "",
+      "concept": "Done means the agreed behavior is proven and ownership is clear. A checklist, browser save or exported bundle is a record of work; release acceptance needs the named reviewer and actual environment evidence.",
+      "steps": [
+        {
+          "title": "Assemble the delivery packet",
+          "body": "Export the Studio project and evidence. Include the approved brief, release revision, check runs, verified workspace identity, approved menu, role tests, entry-point and QR evidence, acceptance results and unresolved issues. Label browser exercises separately from product results."
+        },
+        {
+          "title": "Write the operator walkthrough",
+          "body": "Use the real supported screens and names to explain how staff open their restaurant, find an order, move it through its supported statuses and report a problem. Add the supported menu availability update procedure and who is allowed to use it. Do not invent buttons or role names."
+        },
+        {
+          "title": "Record recovery ownership",
+          "body": "Name the release owner and the approved recovery or rollback procedure. Record which artifacts or configuration must be restored and how success is checked. A rollback plan needs actual repository and hosting support; do not claim that restoring a browser draft rolls back production."
+        },
+        {
+          "title": "Have someone else rehearse it",
+          "body": "The reviewer should follow the operator walkthrough using an approved test account and the final entry point. Have them record what was unclear. Correct the guide and rerun any affected test."
+        },
+        {
+          "title": "Record the decision and stop conditions",
+          "body": "Ask the named approver to record accepted, changes requested or blocked with a date and evidence reference. Record the client-approved launch window separately. Keep blockers visible and do not label an unfinished integration as delivered."
+        },
+        {
+          "title": "Save the next engineer’s starting point",
+          "body": "Export a final backup after review. Record the release SHA, current environment, last passing test, known limitations and next task so another engineer can continue with no conversation history."
+        }
+      ],
+      "acceptance": [
+        "The packet has real evidence for each required acceptance item and identifies remaining limitations.",
+        "A second person can follow the operator walkthrough and records the result.",
+        "Recovery, access management and support have named owners.",
+        "The reviewer’s actual decision and any authorized launch window are recorded; no local checkmark substitutes for approval."
+      ],
+      "hints": [
+        "“No known defects” is different from “all possible behavior tested.” List the cases and limits.",
+        "A shared export gives another engineer a copy; it does not create live collaboration or merge simultaneous edits.",
+        "If any required integration is missing, deliver a reviewable draft and list the exact blocked actions."
+      ],
+      "solution": {
+        "explanation": "This is the final reviewer-facing record. Fill it from the ticket evidence, not from memory.",
+        "code": "Client / environment:\nApproved scope:\nRelease SHA / build / tests / deployment evidence:\nRestaurant ID / slug / menu source:\nStaff role and access checks:\nCustomer URL / QR artifact evidence:\nCustomer-to-staff order test:\nRejected-input and retry tests:\nKnown limitations / open blockers:\nOperator walkthrough / rehearsal result:\nRecovery owner / procedure reference:\nSupport and access removal owner:\nReviewer / decision / date / evidence:\nClient-approved launch window:\nBackup filename / next task:"
+      },
+      "manualCheck": "Give the packet to a reviewer without a spoken explanation. If they cannot find the exact deployed revision, ordering link, last passing order test or recovery owner, complete those gaps before acceptance.",
+      "view": "release"
+    }
+  ],
+  "handbook": [
+    {
+      "id": "layer-map",
+      "title": "Where a change belongs",
+      "category": "Our stack",
+      "body": "The preserved Tide Casa guide describes a Blazor UI, C# contracts, an ASP.NET API and domain/storage logic. The Studio preview uses HTML, CSS and JavaScript to teach a small interaction. It does not compile Razor or modify the real repository. Adapt and review a prototype in the appropriate application layer; never assume the exported preview is a complete Blazor application.",
+      "example": "Label or layout → UI component / style\nRequest or response shape → contract\nWho can act → authentication and authorization boundary\nPrice, availability, tenancy or retry decision → server rule\nPersistence and concurrency → storage boundary\nStudio HTML/CSS/JS → isolated practice draft"
+    },
+    {
+      "id": "request-flow",
+      "title": "Follow one order through the stack",
+      "category": "Our stack",
+      "body": "The browser collects an intent: which items, how many and the supported ordering context. The server verifies identity where required, restaurant access, request shape and business rules, then records an accepted order according to the product’s storage contract. The response updates the UI. To diagnose a defect, find the first boundary where observed data differs from the expected rule. Do not invent endpoint names from this diagram.",
+      "example": "Customer input → UI state → request contract → API validation\n→ authoritative menu / business decision → stored order\n→ response contract → customer confirmation and staff view\nEvidence: connect the customer result and staff record with the same order identifier."
+    },
+    {
+      "id": "csharp-basics",
+      "title": "Read a small C# method",
+      "category": "C# essentials",
+      "body": "A type describes a value. int holds whole numbers; string holds text; bool holds true or false. A method takes parameters and returns a declared type. Semicolons finish most statements; braces group a block. The expression == compares values, while = assigns one. This example explains syntax; it is not a complete order validator.",
+      "example": "static int Subtotal(int unitCents, int quantity)\n{\n    if (unitCents < 0 || quantity < 1)\n        throw new ArgumentOutOfRangeException();\n    return checked(unitCents * quantity);\n}\n// Subtotal(1299, 2) returns 2598."
+    },
+    {
+      "id": "money",
+      "title": "Use cents; state rounding rules",
+      "category": "C# essentials",
+      "body": "Keep the money representation consistent with the contract. The lessons use integer cents and decimal for fractional calculations. Decimal literals use the m suffix. checked makes arithmetic overflow visible. Round once at the documented boundary using the agreed rule; do not guess a client tax policy from a lesson. Formatting $12.99 belongs at the display boundary.",
+      "example": "int subtotalCents = checked(1299 * 2); // 2598\ndecimal dollars = subtotalCents / 100m; // 25.98\n// In the money lesson only: the sample tax and rounding\n// rules are fictional and explicitly tested."
+    },
+    {
+      "id": "null-validation",
+      "title": "Null, blank and invalid are different",
+      "category": "C# essentials",
+      "body": "string? says a value may be null. An empty string has no characters; whitespace contains spaces or similar characters. Validate the intended rule before using the input. Browser validation helps the person correct a mistake; server validation still protects the records because a caller can bypass the browser.",
+      "example": "static string? ValidateName(string? name)\n{\n    return string.IsNullOrWhiteSpace(name)\n        ? \"Enter a name.\"\n        : null;\n}\n// null here means “no validation error”, not an empty name."
+    },
+    {
+      "id": "records",
+      "title": "Records, copies and mutable state",
+      "category": "C# essentials",
+      "body": "A record is useful for a value-shaped message or snapshot. Value equality compares its members, and a with expression creates a copy with selected changes. A record containing a mutable list still shares that list in a shallow copy. Keep state changes explicit; do not assume the word record makes a nested object immutable.",
+      "example": "public record MenuItem(string Name, int PriceCents);\nvar original = new MenuItem(\"Tacos\", 1299);\nvar revised = original with { PriceCents = 1399 };\n// original.PriceCents is still 1299.\n// A List<T> member would require additional care or copying."
+    },
+    {
+      "id": "linq",
+      "title": "Read a LINQ query left to right",
+      "category": "C# essentials",
+      "body": "LINQ expresses operations over a sequence. Where keeps matching items; Select transforms each item; Any asks whether a match exists; SingleOrDefault requires at most one match and throws if several match. Many queries execute when enumerated, so materialize a snapshot deliberately when needed. Filtering by a tenant identifier is useful but does not replace an authorization decision.",
+      "example": "var availableNames = menu\n    .Where(item => item.Available)\n    .Select(item => item.Name)\n    .ToArray();\n// Keep available rows → choose names → make a snapshot."
+    },
+    {
+      "id": "async",
+      "title": "Await work before using its result",
+      "category": "C# essentials",
+      "body": "Task<T> represents asynchronous work that will produce T. await resumes after the operation completes and propagates its failure. Async is not a promise that every operation runs in parallel. Avoid fire-and-forget work for an order that must succeed or fail visibly, and do not block an async flow with .Result just to access a value.",
+      "example": "static async Task<string> ReadNoteAsync(string path)\n{\n    string text = await File.ReadAllTextAsync(path);\n    return text.Trim();\n}\n// Handle failures at a boundary where a useful outcome\n// can be shown or logged. This is an illustration, not Studio execution."
+    },
+    {
+      "id": "errors",
+      "title": "Validation errors and unexpected failures",
+      "category": "Debugging",
+      "body": "A rejected input is an expected outcome: explain what the user can correct. A compiler error prevents the build and points to code. An unexpected server failure requires diagnostic evidence and a safe response, not a guessed retry or a swallowed exception. Preserve the first useful error, environment, revision and correlation identifier if the product provides one. Keep secrets and personal data out of notes.",
+      "example": "Record: action → expected result → actual result\nThen: first relevant error → file / line or request reference\nThen: one hypothesis → smallest change → rerun\nDo not replace an exception with “success” to quiet the screen."
+    },
+    {
+      "id": "retries",
+      "title": "One retry is not a second intended order",
+      "category": "Reliability",
+      "body": "An idempotency key can identify one logical attempt. Repeating that key with the same meaningful payload should follow the product’s documented duplicate-handling contract; changing the payload under the same key should not silently reuse an unrelated receipt. A new deliberate order is a new attempt. The C# lesson demonstrates this with in-memory state; it does not prove durability, race handling or a production API contract.",
+      "example": "Attempt A + key K + payload P → record the result\nRetry A + key K + payload P → verify no unintended duplicate\nKey K + changed payload Q → verify the documented conflict\nNew deliberate order B → its own attempt / key"
+    },
+    {
+      "id": "browser-tools",
+      "title": "Read a browser failure calmly",
+      "category": "Debugging",
+      "body": "Start with the Studio console for preview errors and behavior checks. Preserve element IDs that the code selects. A null selector often means the element is missing or the script ran before it existed. The isolated preview intentionally blocks network calls and origin storage; a blocked fetch there is not evidence of a production API outage. Use configured product evidence for real request failures.",
+      "example": "HTML: <button id=\"add\">Add to order</button>\nJS: document.querySelector(\"#add\")\nThe # means “find this id”.\nIf the HTML id becomes add-item, the old selector finds null."
+    },
+    {
+      "id": "git-review",
+      "title": "Make a change another engineer can review",
+      "category": "Team delivery",
+      "body": "A branch groups proposed changes; a commit records a revision; a pull request presents a change for review. Studio backups preserve drafts but do not create commits, push branches or open reviews. Use the configured repository workflow. Describe the observed problem, resulting behavior, smallest relevant change and evidence. If multiple people work from exports, agree an owner and reconcile the copies before claiming one accepted version.",
+      "example": "Problem: two items displayed the wrong subtotal.\nChange: multiply unit cents by quantity.\nEvidence: 1299 × 2 = 2598; original failure now passes.\nRegression: empty-cart and missing-table checks pass.\nRevision: actual reviewed SHA, supplied by repository workflow.\nRemaining limits: browser exercise only / actual product checks as recorded."
+    },
+    {
+      "id": "evidence",
+      "title": "Choose the right kind of evidence",
+      "category": "Team delivery",
+      "body": "A source check can confirm text exists. A browser check can exercise a preview. A compiler run can prove code compiled for that revision. An integration test can exercise collaborating parts. A product acceptance test can verify a user journey in an environment. None automatically proves every other layer. Completion records should say what ran, where, against which revision and what remained untested.",
+      "example": "Draft saved ≠ repository updated\nPreview passed ≠ C# compiled\nC# compiled ≠ order delivered\nTest passed on SHA A ≠ SHA B tested\nQR generated ≠ QR scanned\nChecklist complete ≠ reviewer approved"
+    },
+    {
+      "id": "deployment",
+      "title": "Keep a precise deployment boundary",
+      "category": "Team delivery",
+      "body": "The Studio prepares drafts, preview behavior and evidence. Production provisioning, invitations, builds, review and deployment require configured authorized tools. If an action is unavailable, record awaiting integration with the required action and owner. Do not replace the missing action with a simulated success. A rollback uses the real release and data/configuration process; restoring local browser work is only draft recovery.",
+      "example": "Ready for review: draft + expected outcome + required checks\nReady for acceptance: actual environment evidence + resolved blockers\nLaunch: named approver + authorized release process + agreed window\nBlocked action: exact capability / owner / evidence still required"
+    }
+  ],
+  "diagnostics": [
+    {
+      "code": "CS1002",
+      "title": "A statement is missing its semicolon",
+      "meaning": "The C# compiler expected a semicolon. The useful location may be the line just before the reported location.",
+      "steps": [
+        "Read the first CS1002, not the whole cascade of later errors.",
+        "Inspect the end of the statement and the preceding line; check quotes and parentheses as well as semicolons.",
+        "Make the smallest draft correction, then obtain a new compile result through the configured workflow."
+      ],
+      "example": "Before: int cents = 1299\nAfter:  int cents = 1299;"
+    },
+    {
+      "code": "CS0103",
+      "title": "A name is not available here",
+      "meaning": "The identifier cannot be resolved in the current scope. C# names are case-sensitive, and a local variable exists only inside its scope.",
+      "steps": [
+        "Compare spelling and capitalization to the declaration.",
+        "Check whether the variable was declared inside a different method or block.",
+        "Pass required data as a parameter or use the intended accessible member; do not create an unrelated second variable simply to remove the error."
+      ],
+      "example": "int priceCents = 1299;\n// pricecents is a different, undeclared name.\nConsole.WriteLine(priceCents);"
+    },
+    {
+      "code": "CS0029",
+      "title": "The value has a different type",
+      "meaning": "The assignment needs a conversion the compiler cannot perform implicitly. Fix the input boundary or use the correct type instead of forcing a misleading cast.",
+      "steps": [
+        "Read both types in the compiler message.",
+        "Find where the value became text, a number, a task or a nullable value.",
+        "For user text, parse and handle failure explicitly. For money, preserve the agreed cents representation."
+      ],
+      "example": "string input = \"2\";\nif (!int.TryParse(input, out int quantity))\n    throw new ArgumentException(\"Enter a whole quantity.\");\n// int quantity = input; would not compile."
+    },
+    {
+      "code": "CS1061",
+      "title": "That type has no matching member",
+      "meaning": "The property or method is absent from the type being used, or a needed extension method is not in scope.",
+      "steps": [
+        "Inspect the actual type of the expression before the dot.",
+        "Check the member spelling and the real contract; do not guess a property name.",
+        "If the value is Task<T>, await it in an async method before accessing T. If using LINQ, confirm the intended sequence type and namespace."
+      ],
+      "example": "public record Receipt(int TotalCents);\nvar receipt = new Receipt(2598);\nConsole.WriteLine(receipt.TotalCents);\n// receipt.Total is not declared by this record."
+    },
+    {
+      "code": "CS0246",
+      "title": "A type or namespace cannot be found",
+      "meaning": "The compiler cannot resolve a named type or namespace. Possible causes include spelling, a missing using, or a missing project reference.",
+      "steps": [
+        "Check the exact type name and where the repository defines it.",
+        "Compare namespaces and project references with a working nearby file.",
+        "Do not install a package at random. Keep teaching examples within their declared dependencies and get a fresh build after the targeted correction."
+      ],
+      "example": "using System.Collections.Generic;\nList<string> problems = new();\n// If the missing type is an application contract, inspect\n// its namespace and project reference rather than inventing it."
+    },
+    {
+      "code": "HTTP 400",
+      "title": "The request was rejected as invalid",
+      "meaning": "The server could not accept the request as sent. Read its actual validation response; a 400 alone does not identify the broken field.",
+      "steps": [
+        "Record the action, environment, revision and sanitized response message.",
+        "Compare the supplied fields and types with the documented contract and approved validation rules.",
+        "Correct the input, retry deliberately, and confirm no unintended order was created by the rejected attempt."
+      ],
+      "example": "Expected case: missing required ordering context.\nRecord: actual response message + no unintended staff record.\nDo not label every 400 a missing-table error without evidence."
+    },
+    {
+      "code": "HTTP 401",
+      "title": "The session is not authenticated",
+      "meaning": "The endpoint requires valid authentication and the supplied session or credentials were not accepted.",
+      "steps": [
+        "Confirm you are using the intended environment and supported sign-in flow.",
+        "Check whether the approved test session expired and sign in again through the supported workflow.",
+        "Do not paste tokens into notes or remove authentication to make the request pass."
+      ],
+      "example": "Record the test identity label and sign-in outcome.\nKeep passwords, cookies and tokens out of the evidence."
+    },
+    {
+      "code": "HTTP 403",
+      "title": "The identity does not have permission",
+      "meaning": "The server refused the action for the authenticated identity or current access policy.",
+      "steps": [
+        "Compare the action, restaurant and supported role with the agreed duties.",
+        "If this is the intended denied-action test, record the result as evidence.",
+        "If it should be allowed, ask the access owner to verify the role mapping; do not grant administrator automatically."
+      ],
+      "example": "Test shift operator → unsupported menu-management action\nExpected: denied according to the approved role mapping."
+    },
+    {
+      "code": "HTTP 404",
+      "title": "The requested resource was not found",
+      "meaning": "The URL or resource could not be found, or the service deliberately did not disclose it. This does not by itself prove that a restaurant was deleted.",
+      "steps": [
+        "Compare the complete URL and environment with the approved entry point.",
+        "Check the configured slug and route from readback evidence; do not invent an alternate endpoint.",
+        "If the QR points to an old location, record and replace the final artifact through the authorized workflow, then scan again."
+      ],
+      "example": "Record the scanned destination and the verified destination.\nA draft slug is not proof that a matching route exists."
+    },
+    {
+      "code": "HTTP 409",
+      "title": "The request conflicts with current state",
+      "meaning": "The server detected a conflict. It might involve an idempotency key, an existing record or a state transition; use the actual response to decide.",
+      "steps": [
+        "Read the conflict detail and capture a safe request reference if available.",
+        "For an idempotency conflict, compare the logical attempt and meaningful payload; do not reuse one key for a different order.",
+        "Refresh authoritative state or resolve the conflict according to the product contract. Avoid repeated blind submissions."
+      ],
+      "example": "Same attempt key + changed quantity may conflict if the\nproduct contract enforces payload identity. Verify that\ncontract and actual response before diagnosing the cause."
+    },
+    {
+      "code": "HTTP 500",
+      "title": "An unexpected server error occurred",
+      "meaning": "The server failed while handling the request. The browser cannot establish the cause from this status alone.",
+      "steps": [
+        "Record the time, environment, release SHA, action and safe correlation identifier if supplied.",
+        "Determine through the authorized workflow whether the order was recorded before attempting another submission.",
+        "Have the responsible engineer inspect server evidence, fix the cause, and rerun the reproduction and affected tests on the new revision."
+      ],
+      "example": "Expected: one accepted test order.\nObserved: 500 after submit.\nUnknown: whether an order persisted.\nNext: inspect matching server/staff evidence before retry."
+    },
+    {
+      "code": "JS: null selector",
+      "title": "The script cannot find an element",
+      "meaning": "A DOM lookup returned null, so reading a property or attaching a handler failed. The HTML identifier may have changed or the script may run too early.",
+      "steps": [
+        "Read the first relevant JavaScript error in the Studio console.",
+        "Compare the selector with the exact HTML id, including capitalization.",
+        "Restore the agreed id or update every intended reference, then rerun preview and behavior checks."
+      ],
+      "example": "document.querySelector(\"#add\").addEventListener(...)\nrequires an element with id=\"add\" in the preview HTML."
+    },
+    {
+      "code": "JS: SyntaxError",
+      "title": "The browser could not read the script",
+      "meaning": "A missing quote, bracket, comma or other syntax problem stopped JavaScript from being parsed.",
+      "steps": [
+        "Read the first syntax error and inspect the nearby line and the previous one.",
+        "Pair quotes, parentheses and braces; undo only the last small edit if that isolates the mistake.",
+        "Run a fresh preview after the correction. A script that failed to parse did not run its behavior checks."
+      ],
+      "example": "Before: const money = cents => \"$\" + (cents / 100.toFixed(2);\nAfter:  const money = cents => \"$\" + (cents / 100).toFixed(2);"
+    },
+    {
+      "code": "Preview: network blocked",
+      "title": "The sandbox blocks external connections",
+      "meaning": "The practice preview is intentionally isolated from network services and the Studio’s origin storage. A blocked fetch here is not a live API test.",
+      "steps": [
+        "Keep browser practice data inside the preview model.",
+        "Use the configured product test workflow for actual API and persistence evidence.",
+        "Record the preview limitation rather than disabling isolation or claiming a remote test passed."
+      ],
+      "example": "fetch(\"https://example.invalid/...\") is not a supported\nway to connect the isolated preview to a restaurant."
+    },
+    {
+      "code": "Save: another tab changed this draft",
+      "title": "A newer browser draft needs reconciliation",
+      "meaning": "Another tab or imported workspace may contain newer work. Browser-local drafts are copies, not collaborative editing.",
+      "steps": [
+        "Export the current tab’s work before reloading or importing anything.",
+        "Open the latest saved version and compare the relevant changes.",
+        "Choose one owner to reconcile the copies and export the accepted result; do not assume a last save merged both versions."
+      ],
+      "example": "Record: your backup filename + accepted backup filename\n+ which changes were retained. Never discard the only\ncopy of a teammate’s unsaved work."
+    }
+  ]
+}
