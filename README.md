@@ -1,5 +1,8 @@
 # Engineering Studio
 
+> Current rights: all rights reserved by MJ Physics Engineering / Michael Bangel. No new license is granted by this revision. Prior grants and third-party notices remain effective; see the root LICENSE and LICENSING.md.
+
+
 A browser workspace for the work between the big ideas: guided delivery tickets, client configuration, small code changes, debugging and review evidence. Routine use makes **no AI calls**.
 
 **Open `Open Engineering Studio.html` in Chrome or Edge.** It is a self-contained file: no terminal, local server, package installation or local .NET SDK is needed. Keep it at the same path and use the same browser profile to retain its browser-local drafts. Back up before moving it, clearing browser data or switching devices.
